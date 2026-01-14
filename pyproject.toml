@@ -1,60 +1,88 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "comfyui-jetblock-optimizer"
-version = "2.0.0"
-description = "Revolutionary performance optimization for ComfyUI with ThinkingMachines deterministic mode"
+version = "4.0.0"
+description = "Full Nemotron 3 hybrid architecture optimization for ComfyUI with Mamba-2 determinism, MoE routing, and batch-invariant operators"
 readme = "README.md"
-license = {text = "Apache-2.0"}
+license = {text = "MIT"}
 authors = [
-    {name = "Joseph Ibrahim", email = "joseph@josephibrahim.com"}
+    {name = "Joseph Ibrahim", email = "contact@josephibrahim.com"}
 ]
 keywords = [
     "comfyui",
+    "nemotron",
+    "mamba2",
+    "determinism",
+    "llm",
     "optimization",
-    "rtx4090",
-    "diffusion",
-    "deterministic",
-    "reproducible",
-    "nemotron"
+    "nvidia",
+    "rtx"
 ]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: Apache Software License",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Libraries :: Python Modules",
 ]
 requires-python = ">=3.10"
 dependencies = [
-    "torch>=2.0.0",
+    "torch>=2.1.0",
+    "numpy>=1.24.0",
 ]
 
 [project.optional-dependencies]
+full = [
+    "triton>=2.1.0",
+    "einops>=0.7.0",
+    "mamba-ssm>=1.2.0",
+]
 dev = [
     "pytest>=7.0.0",
+    "pytest-benchmark>=4.0.0",
     "black>=23.0.0",
     "ruff>=0.1.0",
 ]
 
 [project.urls]
-Homepage = "https://github.com/JosephTheBoss/comfyui-jetblock-optimizer"
-Repository = "https://github.com/JosephTheBoss/comfyui-jetblock-optimizer"
-Issues = "https://github.com/JosephTheBoss/comfyui-jetblock-optimizer/issues"
+Homepage = "https://github.com/josephibrahim/ComfyUI-JetBlock-Optimizer"
+Documentation = "https://github.com/josephibrahim/ComfyUI-JetBlock-Optimizer#readme"
+Repository = "https://github.com/josephibrahim/ComfyUI-JetBlock-Optimizer.git"
+Issues = "https://github.com/josephibrahim/ComfyUI-JetBlock-Optimizer/issues"
 
-[build-system]
-requires = ["setuptools>=61.0"]
-build-backend = "setuptools.build_meta"
+[tool.setuptools]
+packages = ["comfyui_jetblock_optimizer"]
+package-dir = {"comfyui_jetblock_optimizer" = "."}
 
-[tool.setuptools.packages.find]
-where = ["."]
+[tool.setuptools.package-data]
+"*" = ["*.js", "*.css"]
 
 [tool.black]
 line-length = 100
-target-version = ['py310', 'py311', 'py312']
+target-version = ["py310", "py311", "py312"]
 
 [tool.ruff]
 line-length = 100
-select = ["E", "F", "W", "I"]
+target-version = "py310"
+select = ["E", "F", "W", "I", "N", "UP", "B", "C4"]
 ignore = ["E501"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-v --tb=short"
+markers = [
+    "determinism: tests for deterministic execution",
+    "mamba2: tests for Mamba-2 layers",
+    "moe: tests for MoE routing",
+    "benchmark: performance benchmarks",
+]

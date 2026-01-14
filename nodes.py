@@ -571,6 +571,19 @@ from .nodes_cosmos import (
     COSMOS_NODE_DISPLAY_NAME_MAPPINGS
 )
 
+# Import v4.0 Nemotron nodes
+try:
+    from .nodes_v4 import (
+        V4_NODE_CLASS_MAPPINGS,
+        V4_NODE_DISPLAY_NAME_MAPPINGS
+    )
+    V4_AVAILABLE = True
+except ImportError as e:
+    V4_NODE_CLASS_MAPPINGS = {}
+    V4_NODE_DISPLAY_NAME_MAPPINGS = {}
+    V4_AVAILABLE = False
+    print(f"[JetBlock] v4.0 nodes not available: {e}")
+
 # Node mappings for ComfyUI
 NODE_CLASS_MAPPINGS = {
     "JetBlockModelOptimizer": JetBlockModelOptimizer,
@@ -590,6 +603,9 @@ NODE_CLASS_MAPPINGS.update(COMPATIBILITY_NODE_CLASS_MAPPINGS)
 # Merge Cosmos nodes
 NODE_CLASS_MAPPINGS.update(COSMOS_NODE_CLASS_MAPPINGS)
 
+# Merge v4.0 Nemotron nodes
+NODE_CLASS_MAPPINGS.update(V4_NODE_CLASS_MAPPINGS)
+
 NODE_DISPLAY_NAME_MAPPINGS = {
     "JetBlockModelOptimizer": "JetBlock Model Optimizer",
     "JetBlockSampler": "JetBlock Fast Sampler",
@@ -607,3 +623,6 @@ NODE_DISPLAY_NAME_MAPPINGS.update(COMPATIBILITY_NODE_DISPLAY_NAME_MAPPINGS)
 
 # Merge Cosmos display names
 NODE_DISPLAY_NAME_MAPPINGS.update(COSMOS_NODE_DISPLAY_NAME_MAPPINGS)
+
+# Merge v4.0 Nemotron display names
+NODE_DISPLAY_NAME_MAPPINGS.update(V4_NODE_DISPLAY_NAME_MAPPINGS)
